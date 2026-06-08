@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.1.0",
+  "name": "psyda-design-system",
+  "version": "1.0.0",
+  "description": "Engineer reference for implementing PSYDA UI (心理測評題庫管理系統) with Tailwind CSS + Alpine.js. Provides copy-paste class strings, atomic components, composite patterns, and concrete do/don't rules.",
+  "entrypoint": "SKILL.md",
+  "license": "UNLICENSED",
+  "authors": [
+    {
+      "name": "PSYDA Team"
+    }
+  ],
+  "keywords": [
+    "design-system",
+    "ui",
+    "tailwind",
+    "alpine",
+    "frontend",
+    "psyda",
+    "psychometric-assessment"
+  ],
+  "homepage": "https://github.com/Eva6539/psyda-design-system.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Eva6539/psyda-design-system.md.git"
+  },
+  "capabilities": {
+    "filesystem": {
+      "read": true,
+      "write": false
+    },
+    "network": false,
+    "commands": {
+      "execute": false,
+      "allowed": []
+    },
+    "secrets": {
+      "reads_secrets": false,
+      "writes_secrets": false
+    }
+  },
+  "source": {
+    "type": "git",
+    "url": "https://github.com/Eva6539/psyda-design-system.md.git",
+    "path": ".",
+    "revision": "main"
+  },
+  "update": {
+    "strategy": "semver",
+    "channel": "stable",
+    "allow_major": false,
+    "auto_update": false
+  }
+}

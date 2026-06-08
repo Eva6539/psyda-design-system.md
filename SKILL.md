@@ -11,12 +11,12 @@ Code-first implementation reference for the PSYDA platform (Tailwind CSS + Alpin
 
 | Topic | File |
 |-------|------|
-| Color tokens, typography, spacing, radius | [tokens.md](tokens.md) |
-| Atomic components (button, card, input, modal, table, badge, alert) | [components.md](components.md) |
-| Composite patterns (step modal, 5:7 picker, cascade dropdown, batch ops) | [patterns.md](patterns.md) |
-| Do/don't concrete rules + anti-pattern code samples | [rules.md](rules.md) |
+| Color tokens, typography, spacing, radius | [tokens.md](references/tokens.md) |
+| Atomic components (button, card, input, modal, table, badge, alert) | [components.md](references/components.md) |
+| Composite patterns (step modal, 5:7 picker, cascade dropdown, batch ops) | [patterns.md](references/patterns.md) |
+| Do/don't concrete rules + anti-pattern code samples | [rules.md](references/rules.md) |
 
-Read SKILL.md first. Load detail files only when you need them.
+Read SKILL.md first. Load detail files (in `references/`) only when you need them.
 
 ---
 
@@ -47,7 +47,7 @@ Read SKILL.md first. Load detail files only when you need them.
 4. **Surface primary actions**. High-frequency actions belong as visible buttons. Hide only low-frequency or destructive actions in `⋮` menu.
 5. **Always confirm destructive ops**. Pair every delete with a confirmation modal that offers a non-destructive alternative (e.g., "Disable").
 
-For the full set of rules with code examples, see [rules.md](rules.md).
+For the full set of rules with code examples, see [rules.md](references/rules.md).
 
 ---
 
@@ -63,8 +63,8 @@ For the full set of rules with code examples, see [rules.md](rules.md).
 
 ```
 Building a UI element?
-├── Atomic (button, input, card, badge)        → components.md
-├── Composite flow (step form, picker, modal)  → patterns.md
-├── Need a color / spacing value               → tokens.md
-└── Unsure if your approach is correct         → rules.md (do/don't)
+├── Atomic (button, input, card, badge)        → references/components.md
+├── Composite flow (step form, picker, modal)  → references/patterns.md
+├── Need a color / spacing value               → references/tokens.md
+└── Unsure if your approach is correct         → references/rules.md (do/don't)
 ```

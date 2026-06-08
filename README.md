@@ -1,33 +1,55 @@
 # PSYDA Design System
 
-PSYDA 心理測評題庫管理系統的 UI 設計規範。標準 [Claude Code skill](https://docs.anthropic.com/en/docs/claude-code/skills) 結構。
+PSYDA 心理測評題庫管理系統的 UI 設計規範。符合 [Skills Package Specification](https://github.com/kuanntw/skills-spec) v0.1.0 的標準 skill 套件。
 
-## 結構
+## 結構（spec-compliant）
 
-| 檔案 | 用途 | 何時載入 |
-|------|------|---------|
-| [`SKILL.md`](./SKILL.md) | 主檔：Quick Reference + 檔案索引 + 5 條關鍵規則 | **自動載入**（小，~70 行）|
-| [`tokens.md`](./tokens.md) | 設計常數：顏色、字型、間距、圓角 | 按需 |
-| [`components.md`](./components.md) | 原子元件：按鈕、卡片、輸入、Modal、表格、Alert | 按需 |
-| [`patterns.md`](./patterns.md) | 複合模式：步驟表單、5:7 picker、級聯下拉、批次操作 | 按需 |
-| [`rules.md`](./rules.md) | Do/Don't 規則 + 反面教材 code | 按需 |
-
-**設計目的**：
-- 主檔精簡，AI 自動載入時不會浪費 token
-- 詳情拆檔，AI 需要時才讀對應檔案
-- 工程師查找：直接看 Quick Reference 表或對應檔案
-
-## 安裝為 Claude Code Skill
-
-```bash
-# 全域安裝（所有專案可用）
-git clone https://github.com/Eva6539/psyda-design-system.md.git ~/.claude/skills/psyda-design-system
-
-# 或專案安裝
-git clone https://github.com/Eva6539/psyda-design-system.md.git .claude/skills/psyda-design-system
+```
+psyda-design-system/
+├── SKILL.md            ← 主檔，AI 自動載入（~70 行）
+├── skill.json          ← Package manifest（spec required）
+└── references/
+    ├── tokens.md       ← 顏色、字型、間距、圓角
+    ├── components.md   ← 原子元件（button、card、input、modal）
+    ├── patterns.md     ← 複合模式（step modal、5:7 picker）
+    └── rules.md        ← Do/Don't 規則 + 反面教材
 ```
 
-安裝後，Claude 會根據 SKILL.md 的 description 自動判斷何時載入此 skill。
+| 檔案 | 何時載入 |
+|------|---------|
+| `SKILL.md` | 自動（小，~70 行）|
+| `skill.json` | CLI / SDK 工具讀取 |
+| `references/*.md` | 按需，AI 引用時才讀 |
+
+## 安裝
+
+### 為 Claude Code skill 安裝（建議）
+
+```bash
+# 全域安裝
+git clone https://github.com/Eva6539/psyda-design-system.md.git \
+  ~/.claude/skills/psyda-design-system
+
+# 或使用 spec 推薦的 .agents/skills/ 路徑
+git clone https://github.com/Eva6539/psyda-design-system.md.git \
+  ~/.agents/skills/psyda-design-system
+
+# 專案級別安裝
+git clone https://github.com/Eva6539/psyda-design-system.md.git \
+  .claude/skills/psyda-design-system
+```
+
+安裝後 Claude 會根據 SKILL.md 的 description 自動判斷何時載入。
+
+## 符合的 Spec 規範
+
+- **Core skill format**：`SKILL.md` + YAML frontmatter ✓
+- **Package manifest**：`skill.json` 含 schema_version、name、version、entrypoint ✓
+- **Progressive disclosure**：主檔精簡，詳情拆檔到 `references/` ✓
+- **Naming**：lowercase kebab-case（`psyda-design-system`）✓
+- **Capability declarations**：filesystem read-only, no network/secrets ✓
+- **Versioning**：SemVer (`1.0.0`) ✓
+- **Source metadata**：git repo URL + branch ✓
 
 ## 適用情境
 
@@ -47,4 +69,4 @@ git clone https://github.com/Eva6539/psyda-design-system.md.git .claude/skills/p
 
 ## 版本
 
-v3 — 標準 Claude skill 資料夾結構（拆檔，省 token）
+v4 — Spec-compliant（符合 [kuanntw/skills-spec](https://github.com/kuanntw/skills-spec) v0.1.0）
