@@ -1,0 +1,84 @@
+{
+  "schema_version": "0.1.0",
+  "skill_name": "psyda-design-system",
+  "evals": [
+    {
+      "id": "primary-cta-button",
+      "prompt": "Write a Tailwind CSS class string for a primary CTA button labeled 'Save' with a save icon, suitable for the PSYDA platform.",
+      "expected_output": "A button element using bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700, including an icon slot.",
+      "assertions": [
+        "Output uses bg-blue-600 class.",
+        "Output uses text-white class.",
+        "Output has px-4 and py-2 padding.",
+        "Output uses rounded-lg.",
+        "Output has hover:bg-blue-700.",
+        "Output references components.md or Quick Reference."
+      ]
+    },
+    {
+      "id": "warning-vs-info-distinction",
+      "prompt": "I want to show a hint that says 'This category's AI scoring guide: [text]'. Should this be styled as warning (amber) or info (blue)?",
+      "expected_output": "Use info blue, because the content is purely informational and does not require user attention or action.",
+      "assertions": [
+        "Output recommends info blue (bg-blue-50 border-blue-200 text-blue-800).",
+        "Output rejects amber/warning styling for plain information.",
+        "Output explains the rule from rules.md or tokens.md."
+      ]
+    },
+    {
+      "id": "picker-layout",
+      "prompt": "Design a picker UI where users select questions from a question bank into a group. What grid layout should be used?",
+      "expected_output": "Use grid-cols-12 with col-span-5 for the source pool and col-span-7 for the selected list, giving the selected pane more visual weight.",
+      "assertions": [
+        "Output uses grid-cols-12 layout.",
+        "Output assigns col-span-5 to the source pool.",
+        "Output assigns col-span-7 to the selected list.",
+        "Output references the 5:7 picker pattern in patterns.md."
+      ]
+    },
+    {
+      "id": "destructive-action-flow",
+      "prompt": "How should a delete action be implemented for a category that may have dependent question items?",
+      "expected_output": "Implement a confirmation modal that shows the impact (number of dependents), offers a non-destructive alternative (e.g., 'Disable instead'), and uses red bg-red-600 only for the final confirm button.",
+      "assertions": [
+        "Output requires a confirmation modal.",
+        "Output mentions showing impact of deletion.",
+        "Output offers a non-destructive alternative such as Disable.",
+        "Output uses bg-red-600 for the confirm button.",
+        "Output references rules.md or patterns.md (Delete Confirmation)."
+      ]
+    },
+    {
+      "id": "category-hierarchy-display",
+      "prompt": "How should a 3-level category hierarchy (e.g., 校園心理測評 / 情緒壓力 / 壓力預防) be displayed alongside each item in a list?",
+      "expected_output": "Display as plain-text breadcrumb with › separators in muted gray. Avoid using 3 colored chips because that creates visual noise.",
+      "assertions": [
+        "Output uses plain text with › separators.",
+        "Output uses text-gray-500 or similar muted color.",
+        "Output explicitly rejects using 3 colored chips per row.",
+        "Output references the breadcrumb pattern."
+      ]
+    },
+    {
+      "id": "action-button-priority",
+      "prompt": "A group management list row needs these actions: view results, manage employees, duplicate group, manage report templates, delete group. How should these be arranged in the UI?",
+      "expected_output": "Surface high-frequency actions (view results, manage employees) as visible buttons. Put low-frequency (duplicate, report templates) and destructive (delete) actions in a ⋮ menu, with delete styled in red and placed last.",
+      "assertions": [
+        "Output surfaces view results and manage employees as visible buttons.",
+        "Output places duplicate and report templates in a ⋮ menu.",
+        "Output places delete in the ⋮ menu in red.",
+        "Output references the action hierarchy rule."
+      ]
+    },
+    {
+      "id": "step-modal-when",
+      "prompt": "When should I split a form into a step modal versus keeping it as a single-page form?",
+      "expected_output": "Use a step modal when the form has 5+ fields or covers multiple distinct concepts (e.g., basic info + assignment + scheduling). Keep simple forms (under 5 fields, single concept) as single-page.",
+      "assertions": [
+        "Output mentions the 5+ fields threshold.",
+        "Output mentions max 5 steps.",
+        "Output references patterns.md step modal section."
+      ]
+    }
+  ]
+}
