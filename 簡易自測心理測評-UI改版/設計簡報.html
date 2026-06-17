@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>簡易自測心理測評 · UI 改版設計提案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#f4efe4; --paper:#fffdf8; --forest:#2f3a2b; --ink:#454e3c;
+    --ink-soft:#8a9079; --ink-faint:#b3b6a1; --sage:#7e8a6a; --sage-deep:#5f6c4d;
+    --olive:#a7ac84; --clay:#bd7f57; --line:#e7e0d0; --soft:0 14px 34px rgba(95,80,50,.12);
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; height:100%; }
+  body{ font-family:"Plus Jakarta Sans","PingFang TC","Noto Sans TC",system-ui,sans-serif; color:var(--ink);
+    background:#d9d3c6; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+
+  .stage{ width:1280px; height:720px; position:relative; border-radius:20px; overflow:hidden; box-shadow:0 30px 80px rgba(70,58,35,.3); }
+  .slide{ position:absolute; inset:0; padding:54px 64px; display:none; flex-direction:column;
+    background:radial-gradient(120% 80% at 88% -10%,#f6e9c8 0%,transparent 46%),radial-gradient(90% 70% at -5% 110%,#e7ead4 0%,transparent 44%),linear-gradient(160deg,#f6f1e6,#efe9dc); }
+  .slide.on{ display:flex; animation:fade .45s ease; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(8px) } to{ opacity:1; transform:none } }
+
+  .kicker{ font-size:13px; letter-spacing:3px; text-transform:uppercase; color:var(--clay); font-weight:700; }
+  h1{ font-family:"Fraunces",serif; font-weight:500; font-size:54px; line-height:1.1; color:var(--forest); margin:10px 0 0; }
+  h2{ font-family:"Fraunces",serif; font-weight:500; font-size:36px; line-height:1.15; color:var(--forest); margin:8px 0 0; }
+  .sub{ font-size:18px; color:var(--ink-soft); margin-top:16px; line-height:1.6; max-width:620px; }
+  .row{ display:flex; gap:48px; flex:1; align-items:center; margin-top:18px; }
+  .txt{ flex:1; }
+  ul{ margin:22px 0 0; padding:0; list-style:none; }
+  li{ position:relative; padding-left:26px; margin:14px 0; font-size:16.5px; line-height:1.6; color:var(--ink); }
+  li::before{ content:""; position:absolute; left:2px; top:10px; width:9px; height:9px; border-radius:50%; background:var(--sage); }
+  li b{ color:var(--forest); }
+  li small{ display:block; color:var(--ink-soft); font-size:13.5px; margin-top:2px; }
+
+  /* phone embed */
+  .pe{ width:236px; height:474px; flex:none; position:relative; }
+  .pe iframe{ position:absolute; top:0; left:50%; width:380px; height:802px; border:0; transform:translateX(-50%) scale(.585); transform-origin:top center; background:transparent; }
+  .pe.tall iframe{ transform:translateX(-50%) scale(.585); }
+
+  /* concept blocks */
+  .cards{ display:flex; gap:20px; margin-top:34px; }
+  .card{ flex:1; background:var(--paper); border:1px solid var(--line); border-radius:20px; padding:24px; box-shadow:var(--soft); }
+  .card .t{ font-family:"Fraunces",serif; font-size:21px; color:var(--forest); }
+  .card .d{ font-size:14.5px; color:var(--ink-soft); margin-top:8px; line-height:1.6; }
+  .card .em{ font-size:30px; }
+
+  .swatches{ display:flex; gap:14px; margin-top:8px; }
+  .sw{ text-align:center; }
+  .sw i{ display:block; width:74px; height:74px; border-radius:18px; box-shadow:var(--soft); }
+  .sw span{ font-size:12px; color:var(--ink-soft); margin-top:8px; display:block; }
+
+  .steps{ display:flex; align-items:center; gap:8px; margin-top:40px; }
+  .step{ flex:1; background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:22px 18px; text-align:center; box-shadow:var(--soft); }
+  .step .no{ font-family:"Fraunces",serif; color:var(--clay); font-size:15px; }
+  .step .nm{ font-weight:700; color:var(--forest); margin-top:6px; font-size:17px; }
+  .step .ds{ font-size:13px; color:var(--ink-soft); margin-top:6px; line-height:1.5; }
+  .arrow{ color:var(--ink-faint); font-size:22px; flex:none; }
+
+  table{ width:100%; border-collapse:collapse; margin-top:24px; }
+  td,th{ text-align:left; padding:13px 14px; font-size:15.5px; border-bottom:1px solid var(--line); }
+  th{ font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--ink-faint); }
+  .ok{ color:#5f8a4a; font-weight:700; } .warn{ color:#c08a3a; font-weight:700; }
+
+  .end{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+
+  footer{ position:absolute; left:0; right:0; bottom:0; height:46px; padding:0 26px; display:flex; align-items:center; justify-content:space-between;
+    font-size:12px; color:var(--ink-faint); }
+  .nav{ position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:10px; align-items:center; z-index:20; }
+  .nav button{ width:42px; height:42px; border-radius:50%; border:none; background:#fffdf8; color:var(--sage-deep); font-size:18px; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,.18); }
+  .nav .count{ background:#3a3528; color:#fff; font-size:13px; padding:0 14px; height:42px; display:flex; align-items:center; border-radius:99px; }
+</style>
+</head>
+<body>
+  <div class="stage" id="stage">
+
+    <!-- 1 封面 -->
+    <section class="slide on">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">UI 改版設計提案</div>
+          <h1>簡易自測<br/>心理測評</h1>
+          <div class="sub">把冰冷的心理測評，變成一隻陪你的療癒寵物 <b>Mochi</b>。<br/>暖色療癒 · 寵物養成世界觀 · 非診斷的溫柔語氣。</div>
+        </div>
+        <div class="pe"><iframe src="首頁-寵物-融入精緻版.html?deck=1" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>簡易自測心理測評 · 設計提案</span><span>Mochi 療癒陪伴版</span></footer>
+    </section>
+
+    <!-- 2 核心概念 -->
+    <section class="slide">
+      <div class="kicker">核心概念</div>
+      <h2>從「測評工具」到「療癒陪伴」</h2>
+      <div class="sub">原本報告像體檢表——冷、像被診斷、又要等 10 分鐘。我們導入橘貓 <b>Mochi</b> 作為心靈寵物，把整個體驗包進溫暖的養成世界觀。</div>
+      <div class="cards">
+        <div class="card"><div class="em">🌤️</div><div class="t">溫柔非診斷</div><div class="d">情緒像天氣，會變，不是病。語氣支持、不恐嚇。</div></div>
+        <div class="card"><div class="em">🤍</div><div class="t">療癒有質感</div><div class="d">暖色、留白、手感插畫，脫離高彩度的廉價感。</div></div>
+        <div class="card"><div class="em">🐾</div><div class="t">每天想回來</div><div class="d">打卡＝叫醒 Mochi，用情感連結養成每日習慣。</div></div>
+      </div>
+      <footer><span>對象：通用人士（企業員工 / 學生 / 長者）</span><span>02</span></footer>
+    </section>
+
+    <!-- 3 設計系統 -->
+    <section class="slide">
+      <div class="kicker">設計系統</div>
+      <h2>一套統一的視覺語言</h2>
+      <div class="row" style="align-items:flex-start">
+        <div class="txt">
+          <ul>
+            <li><b>字體</b>：標題襯線 Fraunces（優雅有溫度）、內文 Plus Jakarta Sans（乾淨好讀）</li>
+            <li><b>形狀與留白</b>：大圓角、充足留白、少卡片，讓畫面呼吸</li>
+            <li><b>圖示</b>：統一線性圖示，避免「六色彩虹」的 AI 感</li>
+            <li><b>動效</b>：載入淡入、捲動揭示、微互動回饋</li>
+            <li><b>Mochi 雙形態</b>：互動畫面用會動的卡通貓；最終報告用 AI 精緻插畫</li>
+          </ul>
+        </div>
+        <div class="txt">
+          <div class="kicker" style="color:var(--ink-faint)">Forest Canopy 暖色系</div>
+          <div class="swatches" style="margin-top:14px">
+            <div class="sw"><i style="background:#f4efe4"></i><span>奶油象牙</span></div>
+            <div class="sw"><i style="background:#7e8a6a"></i><span>鼠尾草綠</span></div>
+            <div class="sw"><i style="background:#dca94e"></i><span>蜂蜜琥珀</span></div>
+            <div class="sw"><i style="background:#bd7f57"></i><span>暖陶</span></div>
+          </div>
+          <div class="sub" style="font-size:15px; margin-top:24px">徹底脫離原本的高彩度螢光粉，改走溫暖、療癒、值得信賴的色調。</div>
+        </div>
+      </div>
+      <footer><span>設計系統</span><span>03</span></footer>
+    </section>
+
+    <!-- 4 首頁總覽 + 寵物陪伴 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">首頁 · 寵物陪伴區</div>
+          <h2>把「打卡」變成<br/>「叫醒 Mochi」</h2>
+          <ul>
+            <li>Mochi 預設<b>蜷在貓窩睡覺</b>（冒 z）</li>
+            <li>按「開始心晴打卡」→ Mochi <b>醒來、走出貓窩、到處走動</b></li>
+            <li><b>為什麼</b>：給使用者每天回來的情感理由——是去陪牠、叫醒牠<small>不是為了打卡而打卡</small></li>
+            <li>摸摸 / 餵食 / 陪玩 累積親密度；點貓會冒愛心</li>
+            <li>心理能量＝Mochi 的能量，與測評結果連動</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="首頁-寵物-融入精緻版.html?deck=1" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>首頁 · 寵物陪伴</span><span>04</span></footer>
+    </section>
+
+    <!-- 5 首頁其他區塊 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">首頁 · 保留並升級原有功能</div>
+          <h2>本週心情 · 金句 · 打卡 · 探索服務</h2>
+          <ul>
+            <li><b>本週心情</b>：七天一覽，今天用天氣圖示標記，星期對齊</li>
+            <li><b>今日金句</b>：改成編輯式大引言（襯線體落在底色上），像雜誌，降低 AI 感</li>
+            <li><b>今天感覺</b>：五段表情 + 明確的「開始心晴打卡」主按鈕（第一屏可見）</li>
+            <li><b>探索服務</b>：圖示統一同色，僅「簡易自測心理測評」用暖陶＋NEW 強調<small>依需求更名，副標「30 秒・測心理能量」</small></li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="首頁-寵物-融入精緻版.html?deck=1&scroll=420" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>首頁 · 其他區塊</span><span>05</span></footer>
+    </section>
+
+    <!-- 6 流程總覽 -->
+    <section class="slide">
+      <div class="kicker">測評流程</div>
+      <h2>四步，全程有 Mochi 陪</h2>
+      <div class="sub">依業主需求：題數為 <b>1 題</b>、生成時間 <b>1 分鐘內</b>。全程沿用 Mochi 世界觀與暖色語言，讓「做測評」也是一段被陪伴的過程。</div>
+      <div class="steps">
+        <div class="step"><div class="no">STEP 1</div><div class="nm">說明</div><div class="ds">Mochi 迎接、1 題 30 秒</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="no">STEP 2</div><div class="nm">答題 / 錄音</div><div class="ds">Mochi 在聽、聲波回饋</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="no">STEP 3</div><div class="nm">充電生成中</div><div class="ds">Mochi 睡覺充電・1 分鐘</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="no">STEP 4</div><div class="nm">報告</div><div class="ds">看心理能量與建議</div></div>
+      </div>
+      <footer><span>測評流程總覽</span><span>06</span></footer>
+    </section>
+
+    <!-- 7 流程1 說明 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">流程 1 · 說明頁</div>
+          <h2>先讓人安心，<br/>再開始</h2>
+          <ul>
+            <li>Mochi 站姿迎接，溫暖開場</li>
+            <li>三個要點：<b>本次只有 1 題</b>、約 30 秒放鬆說就好、找個安靜角落讓 Mochi 陪你</li>
+            <li><b>為什麼</b>：降低焦慮、設定「沒有標準答案」的安全感</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="測評流程-展示版.html?deck=1" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>流程 1 · 說明</span><span>07</span></footer>
+    </section>
+
+    <!-- 8 流程2 答題錄音 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">流程 2 · 答題與錄音</div>
+          <h2>被傾聽的<br/>語音作答</h2>
+          <ul>
+            <li>小頭像「<b>Mochi 正在聽你說</b>」，營造被傾聽感</li>
+            <li>麥克風脈動光環 + 起伏聲波 + 倒數秒數</li>
+            <li><b>為什麼</b>：語音作答自然、門檻低；視覺讓人安心知道「系統在聽」</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="測評流程-展示版.html?deck=1#s-q1" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>流程 2 · 答題錄音</span><span>08</span></footer>
+    </section>
+
+    <!-- 9 流程3 生成中 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">流程 3 · 充電生成中</div>
+          <h2>把等待，<br/>變成療癒時刻</h2>
+          <ul>
+            <li>Mochi 蜷著睡覺充電 + 進度條</li>
+            <li>文案：「正在為你充電分析…約 1 分鐘內完成，先一起深呼吸」</li>
+            <li><b>為什麼</b>：呼應「心理能量充電」的核心比喻，等待不再焦慮</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="測評流程-展示版.html?deck=1#s-gen" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>流程 3 · 生成中</span><span>09</span></footer>
+    </section>
+
+    <!-- 10 流程4 完成 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">流程 4 · 完成頁</div>
+          <h2>給完成，<br/>一個被肯定的收尾</h2>
+          <ul>
+            <li>開心跳跳的 Mochi + 閃亮亮 + 飄起的愛心，慶祝完成</li>
+            <li>「查看我的報告」主按鈕</li>
+            <li><b>為什麼</b>：給情緒一個有記憶點、被肯定的收尾</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="測評流程-展示版.html?deck=1#s-done" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>流程 4 · 完成</span><span>10</span></footer>
+    </section>
+
+    <!-- 11 報告 心理能量 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">報告 · 核心視覺</div>
+          <h2>心理能量＝<br/>Mochi 抱的愛心</h2>
+          <ul>
+            <li>Mochi 抱著一顆<b>半滿的愛心</b>，填充比例＝測評百分比（示意 50%）</li>
+            <li><b>為什麼用愛心不用電池</b>：保留「充電 / 能量」概念，但更溫暖有情感、不像冷硬器物</li>
+            <li>等級用詞<b>柔化</b>（例：能量過半），避免「沒電 / 即將關機」的負面感</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="報告頁-寵物-精緻版.html?deck=1" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>報告 · 心理能量</span><span>11</span></footer>
+    </section>
+
+    <!-- 12 報告 五指標 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">報告 · 五項情緒指標</div>
+          <h2>精緻的情緒側寫，<br/>不是儀表板</h2>
+          <ul>
+            <li>心情低落 / 情緒活躍 / 擔憂緊張 / 情緒敏感 / 身心疲憊，各 1–10 分<small>取代原本的「人格特質分析」</small></li>
+            <li>襯線大數字 + <b>質性標籤（偏高 / 中等 / 平穩）</b> + 細長條 + 細線分隔</li>
+            <li><b>為什麼</b>：用「偏高 / 平穩」這種人話，比裸數字更好懂、更溫柔</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="報告頁-寵物-精緻版.html?deck=1&scroll=380" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>報告 · 五指標</span><span>12</span></footer>
+    </section>
+
+    <!-- 13 報告 建議+療愈 -->
+    <section class="slide">
+      <div class="row">
+        <div class="txt">
+          <div class="kicker">報告 · 調節建議與療愈</div>
+          <h2>給方向、給安全網，<br/>但不嚇人</h2>
+          <ul>
+            <li><b>調節建議</b>：50 字內、針對最高 1–2 項、具體可執行、支持非診斷</li>
+            <li>任一指標 ≥8 → 顯示「<b>建議尋求專業支持</b>」，用柔和引述式提醒，非生硬警示框</li>
+            <li><b>專屬療愈（Mochi 想對你說）</b>：第二人稱、溫暖、不提數字、不診斷</li>
+          </ul>
+        </div>
+        <div class="pe"><iframe src="報告頁-寵物-精緻版.html?deck=1&scroll=820" loading="lazy"></iframe></div>
+      </div>
+      <footer><span>報告 · 建議與療愈</span><span>13</span></footer>
+    </section>
+
+    <!-- 14 需求檢核 -->
+    <section class="slide">
+      <div class="kicker">對應業主需求</div>
+      <h2>PDF 需求檢核</h2>
+      <table>
+        <tr><th>需求</th><th>狀態</th></tr>
+        <tr><td>更名為「簡易自測心理測評」</td><td class="ok">✓ 已達成</td></tr>
+        <tr><td>五項情緒指標，取代人格特質分析</td><td class="ok">✓ 已達成</td></tr>
+        <tr><td>調節建議（≥8 專業支持、支持非診斷）</td><td class="ok">✓ 已達成</td></tr>
+        <tr><td>專屬療愈內容（第二人稱、不提數字）</td><td class="ok">✓ 已達成</td></tr>
+        <tr><td>題數 1 題</td><td class="ok">✓ 已達成</td></tr>
+        <tr><td>生成時間 1 分鐘內</td><td class="ok">✓ UI 已呈現（實際速度屬後端）</td></tr>
+      </table>
+      <footer><span>需求檢核</span><span>14</span></footer>
+    </section>
+
+    <!-- 15 待確認 -->
+    <section class="slide">
+      <div class="kicker">待業主確認</div>
+      <h2>三個需要您拍板的點</h2>
+      <ul style="margin-top:30px">
+        <li><b>心理能量「5 級命名」</b>：PDF 原為「滿格充電 / 穩定續航 / 電量不足 / 低電量警示 / 即將關機」；我們柔化為「心理能量・能量過半」等。→ 採用柔化版，或照 PDF 原名？</li>
+        <li><b>百分比計算公式</b>：PDF 兩處範例不一致，目前暫採（50−總分）/50×100。→ 請確認公式。</li>
+        <li><b>寵物世界觀方向</b>：Mochi 養成是 PDF 之外的加值設計。→ 確認是否採用此方向，或只單純改報告。</li>
+      </ul>
+      <footer><span>待確認事項</span><span>15</span></footer>
+    </section>
+
+    <!-- 16 結語 -->
+    <section class="slide">
+      <div class="end">
+        <div class="kicker">結語</div>
+        <h1 style="font-size:46px">把心理測評，<br/>變成想每天回來的療癒陪伴。</h1>
+        <div class="sub">已完成可點擊的實機 demo（首頁 → 測評流程 → 報告，可實際操作）。<br/>下一步：確認上述三點 → Mochi 正式美術定稿 → 串接後端與 AI Prompt。</div>
+        <div class="sub" style="color:var(--clay); font-weight:700; margin-top:20px">謝謝，期待和你一起把它做出來 🐾</div>
+      </div>
+      <footer><span>簡易自測心理測評 · 設計提案</span><span>16</span></footer>
+    </section>
+
+  </div>
+
+  <div class="nav">
+    <button id="prev">‹</button>
+    <span class="count" id="count">1 / 16</span>
+    <button id="next">›</button>
+  </div>
+
+<script>
+  var slides=document.querySelectorAll('.slide'), i=0, total=slides.length;
+  function show(n){ i=(n+total)%total; slides.forEach(function(s,k){ s.classList.toggle('on',k===i); }); document.getElementById('count').textContent=(i+1)+' / '+total; }
+  document.getElementById('next').onclick=function(){ show(i+1); };
+  document.getElementById('prev').onclick=function(){ show(i-1); };
+  document.addEventListener('keydown',function(e){ if(e.key==='ArrowRight'||e.key===' ')show(i+1); if(e.key==='ArrowLeft')show(i-1); });
+  show(0);
+</script>
+</body>
+</html>

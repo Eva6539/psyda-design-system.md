@@ -70,3 +70,11 @@ git clone https://github.com/Eva6539/psyda-design-system.md.git \
 ## 版本
 
 v4 — Spec-compliant（符合 [kuanntw/skills-spec](https://github.com/kuanntw/skills-spec) v0.1.0）
+
+---
+
+## 其他內容（非本 skill）
+
+本 repo 另含一份**獨立的設計交付**，與上述 PSYDA skill 分開、互不影響：
+
+- [`簡易自測心理測評-UI改版/`](./簡易自測心理測評-UI改版/) — **2026-06-17 新增**。「簡易自測心理測評」功能的手機端 UI 改版設計稿（Mochi 療癒陪伴版）：首頁 / 測評流程 / 報告三大畫面原型、設計系統、前端交付規格、Mochi 素材、給業主的設計提案（PPTX/PDF/HTML）。詳見該資料夾的 `README.md`。

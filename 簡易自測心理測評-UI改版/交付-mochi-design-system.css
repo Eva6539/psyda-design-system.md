@@ -1,0 +1,151 @@
+/* =====================================================================
+   Mochi 療癒陪伴 · 設計系統 (Design System / Design Tokens)
+   給前端工程師：把這支 CSS 當共用樣式表，各頁面引入後即可套用
+   <link rel="stylesheet" href="mochi-design-system.css">
+   字體：Google Fonts（標題 Fraunces 襯線、內文 Plus Jakarta Sans）
+   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Plus+Jakarta+Sans:wght@400..700&display=swap" rel="stylesheet">
+   中文字會自動 fallback 到 PingFang TC / Noto Sans TC（正式版建議導入一套中文品牌字）
+   ===================================================================== */
+
+:root {
+  /* ---- 基礎色（暖色療癒：Forest Canopy）---- */
+  --ivory: #f4efe4;        /* 背景 暖象牙 */
+  --paper: #fffdf8;        /* 卡片/前景白 */
+  --forest: #2f3a2b;       /* 主文字 深綠 */
+  --ink: #454e3c;          /* 內文 */
+  --ink-soft: #8a9079;     /* 次要文字 */
+  --ink-faint: #b3b6a1;    /* 最弱文字/標籤 */
+  --sage: #7e8a6a;         /* 主品牌綠 */
+  --sage-deep: #5f6c4d;    /* 深綠（icon/強調文字）*/
+  --olive: #a7ac84;        /* 輔助綠 */
+  --clay: #bd7f57;         /* 暖陶（主要強調色 / 主按鈕替代 / NEW 標籤）*/
+  --line: #e7e0d0;         /* 分隔線/邊框 */
+
+  /* ---- 風險色階（測評指標：數值越高越需留意）---- */
+  --risk-low: #7e8a6a;     /* 低（平穩）綠 */
+  --risk-mid: #d3a25a;     /* 中（中等/略高）琥珀 */
+  --risk-high: #c4715a;    /* 高（偏高）陶紅 */
+
+  /* ---- 字體 ---- */
+  --font-display: "Fraunces", "Songti TC", serif;                 /* 標題（襯線、有溫度）*/
+  --font-body: "Plus Jakarta Sans", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+
+  /* ---- 圓角 ---- */
+  --r-screen: 44px;  /* 手機外框 */
+  --r-card: 26px;    /* 主卡片 */
+  --r-tile: 20px;    /* 服務磚 */
+  --r-btn: 16px;     /* 按鈕 */
+  --r-pill: 999px;   /* 膠囊/圓 */
+
+  /* ---- 間距節奏 ---- */
+  --gap-page: 20px;     /* 頁面左右內距 */
+  --gap-block: 24px;    /* 區塊間距 */
+
+  /* ---- 陰影 ---- */
+  --shadow: 0 14px 34px rgba(95,80,50,.10), 0 3px 10px rgba(95,80,50,.06);
+  --shadow-soft: 0 8px 22px rgba(95,80,50,.08);
+  --shadow-xs: 0 3px 12px rgba(95,80,50,.06);
+}
+
+/* ---- 基礎 ---- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--ivory);
+}
+
+/* =====================================================================
+   字體層級
+   ===================================================================== */
+.ds-display   { font-family: var(--font-display); font-weight: 500; color: var(--forest); line-height: 1.15; }
+.ds-title     { font-family: var(--font-display); font-weight: 500; font-size: 19px; color: var(--forest); }
+.ds-eyebrow   { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; }
+.ds-body      { font-size: 14px; line-height: 1.7; color: var(--ink); }
+.ds-note      { font-size: 12px; color: var(--ink-soft); }
+.ds-quote     { font-family: var(--font-display); font-size: 19px; line-height: 1.66; color: var(--forest); } /* 金句/療愈引言 */
+.ds-quote .mark { font-style: italic; color: var(--olive); }
+
+/* =====================================================================
+   按鈕
+   ===================================================================== */
+.ds-btn {
+  width: 100%; border: 0; padding: 15px; border-radius: var(--r-btn); cursor: pointer;
+  font-family: var(--font-body); font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform .15s;
+}
+.ds-btn:active { transform: scale(.97); }
+.ds-btn--primary { color: var(--paper); background: linear-gradient(135deg, #8a9a6a, #697a4f); box-shadow: 0 12px 24px rgba(106,120,80,.3); }
+.ds-btn--ghost   { background: #ede7da; color: var(--sage-deep); }
+.ds-btn--done    { background: #dfe2d2; color: var(--sage-deep); box-shadow: none; } /* 已完成狀態 */
+
+/* =====================================================================
+   卡片 / 標籤 / 膠囊
+   ===================================================================== */
+.ds-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card); padding: 18px; box-shadow: var(--shadow); }
+.ds-tile { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-tile); padding: 16px 15px; box-shadow: var(--shadow-xs); }
+.ds-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--r-pill); font-size: 12px; font-weight: 700; }
+.ds-pill--sage  { background: #eef0df; color: var(--sage-deep); }
+.ds-pill--clay  { background: var(--clay); color: var(--paper); } /* 例：NEW 標籤 */
+.ds-tag  { font-size: 10.5px; font-weight: 700; letter-spacing: .5px; }      /* 指標質性標籤（偏高/中等/平穩）顏色用 risk-* */
+
+/* =====================================================================
+   情緒五項指標（報告頁）
+   結構：.ds-indicator > .ds-indicator__row(名稱 / 標籤+數值) + .ds-indicator__track > i
+   JS：進場/捲動可見時對 i 加 .is-filled 觸發長條填充動畫
+   ===================================================================== */
+.ds-indicator { padding: 13px 0; border-top: 1px solid #ece2d0; }
+.ds-indicator:first-of-type { border-top: 0; }
+.ds-indicator__row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
+.ds-indicator__name { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.ds-indicator__value { font-family: var(--font-display); font-size: 18px; font-weight: 500; }
+.ds-indicator__track { height: 5px; border-radius: var(--r-pill); background: #ebe2d0; overflow: hidden; }
+.ds-indicator__track i { display: block; height: 100%; width: 0; border-radius: var(--r-pill); transition: width 1.1s cubic-bezier(.3,.8,.3,1); }
+.ds-indicator__track i.is-filled { width: var(--w); } /* --w = 指標分數 *10%（例 8.5 → 85%）*/
+
+/* =====================================================================
+   調節建議 · 專業支持提醒（柔和引述式，非警示框）
+   任一指標 >= 8 才顯示 .ds-support
+   ===================================================================== */
+.ds-support { display: flex; align-items: flex-start; gap: 9px; padding: 2px 0 2px 14px; border-left: 2.5px solid #dca98a; }
+.ds-support__title { font-size: 12.5px; font-weight: 700; color: #b56a45; }
+.ds-support__desc  { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+/* =====================================================================
+   療愈卡（Mochi 想對你說）
+   ===================================================================== */
+.ds-says { border-radius: var(--r-card); padding: 20px 18px; text-align: center;
+  background: linear-gradient(160deg,#f3ebdc,#efe6d2); border: 1px solid #ece2cf; box-shadow: var(--shadow); }
+
+/* =====================================================================
+   情緒打卡 五段表情（首頁）.is-selected 為當前選取
+   ===================================================================== */
+.ds-mood { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+.ds-mood__face { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  box-shadow: var(--shadow-xs); outline: 2px solid transparent; outline-offset: 2px; transition: transform .2s, outline-color .2s; }
+.ds-mood.is-selected .ds-mood__face { outline-color: var(--sage); transform: scale(1.05); }
+
+/* =====================================================================
+   固定底部導覽列（重要：放在捲動容器外，position:absolute 釘在手機底部）
+   ===================================================================== */
+.ds-bottomnav { position: absolute; left: 0; right: 0; bottom: 0; height: 80px; padding: 0 16px 16px; z-index: 10;
+  background: linear-gradient(180deg, rgba(244,239,228,.55), var(--ivory) 40%); backdrop-filter: blur(8px);
+  display: flex; justify-content: space-around; align-items: flex-end; }
+.ds-bottomnav__item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; font-weight: 600; color: var(--ink-faint); }
+.ds-bottomnav__item.is-active { color: var(--sage-deep); }
+.ds-bottomnav__home { width: 52px; height: 52px; border-radius: 18px; background: linear-gradient(135deg,#bd7f57,#a3653f);
+  display: grid; place-items: center; box-shadow: 0 10px 20px rgba(163,101,63,.4); margin-bottom: 7px; }
+
+/* =====================================================================
+   通用動效
+   - reveal：進場/捲動可見時加 .is-in 淡入上移（用 IntersectionObserver 觸發）
+   - 顆粒質感：在容器疊一層 SVG noise（見原型 .screen::after）
+   ===================================================================== */
+.ds-reveal { opacity: 0; transform: translateY(14px); transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1); }
+.ds-reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
