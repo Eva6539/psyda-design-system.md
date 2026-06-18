@@ -1,0 +1,90 @@
+/* =========================================================================
+   簡易自測心理測評 · 設計 Token（前端可直接引入）
+   識別色：暖珊瑚 #F5806C ｜ 材質：黏土 × 液態玻璃 ｜ 暖色療癒
+   用法：<link rel="stylesheet" href="tokens.css">，再用 var(--xxx) / 下方 helper class
+   字體（Google Fonts，中文 fallback 系統字）：
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+   ========================================================================= */
+:root{
+  /* ---- 識別色 Identity ---- */
+  --brand-coral:#F5806C;        /* 主色：主要行動、品牌識別、重點 */
+  --brand-coral-light:#FFB597;  /* 漸層上色 / hover */
+  --brand-coral-deep:#E8654F;   /* 按壓 / 淺底上的品牌文字 */
+  --brand-gradient:linear-gradient(180deg,#FFB597,#F5806C);
+
+  /* ---- 品牌中性底 / 表面 ---- */
+  --surface-mist:#F6EBEE;       /* App 背景底（非識別色）*/
+  --surface-paper:#FFFFFF;
+  --surface-glass:linear-gradient(150deg, rgba(255,255,255,.60), rgba(255,255,255,.34));
+
+  /* ---- 輔助色 Secondary（分類 / 狀態；低飽和保持和諧）---- */
+  --mint:#5CBB8C;       /* 正向 / 平穩 / 完成 / 勾選 */
+  --lavender:#A98FE0;   /* AI / 分析 / 語音助手 */
+  --butter:#FFC945;     /* 「今日」/ 提醒標籤（白字對比不足，配深字）*/
+  --mochi:#F3A557;      /* 寵物吉祥物專用，不作 UI 框架色 */
+  --rose:#E58FAC;       /* 暖玫瑰（服務磚色盤之一）*/
+
+  /* ---- 語意色 Semantic（報告五項風險色階；與品牌暖色同調）---- */
+  --risk-low:#7FC6A0;   /* 平穩（數值低 / 狀態良好）*/
+  --risk-mid:#F3BD6A;   /* 需留意（中等）*/
+  --risk-high:#F08A72;  /* 偏高（≥8 帶專業支持）*/
+
+  /* ---- 文字 / 中性（文字不用純黑，用深莓灰當錨點）---- */
+  --ink:#4A3340;        /* 標題 / 內文錨點 */
+  --ink-2:#8A7382;      /* 說明 / 副標 */
+  --ink-3:#BBA9B6;      /* 標籤 / 提示 */
+  --line:#ECE0E8;       /* 髮絲線 / 邊框 */
+
+  /* ---- 圓角 ---- */
+  --r-card:22px; --r-btn:16px; --r-tile:14px; --r-pill:999px;
+
+  /* ---- 陰影（暖粉色調、向下、分層；不用灰）---- */
+  --shadow-warm:0 14px 30px -12px rgba(180,120,150,.28), 0 4px 10px -6px rgba(180,120,150,.14);
+  --shadow-brand:0 12px 22px -8px rgba(240,120,100,.5);
+
+  /* ---- 間距節奏（8pt）---- */
+  --gap-page:18px; --gap-block:24px;
+}
+
+/* =========================================================================
+   材質與元件 recipe（可直接套，或當實作參考）
+   ========================================================================= */
+
+/* 玻璃卡：所有卡片/面板。半透明 + 背景模糊 + 亮邊高光 + 暖色柔投影 */
+.ds-glass{
+  background:var(--surface-glass);
+  -webkit-backdrop-filter:saturate(165%) blur(17px); backdrop-filter:saturate(165%) blur(17px);
+  border:1px solid rgba(255,255,255,.62); border-radius:var(--r-card);
+  box-shadow:0 18px 28px -12px rgba(180,120,150,.26), 0 6px 12px -6px rgba(180,120,150,.14),
+    inset 0 1px 0 rgba(255,255,255,.95), inset -4px -6px 11px rgba(214,170,190,.16);
+}
+/* 註：不支援 backdrop-filter 的瀏覽器會自動退化成半透明白卡，仍可讀。 */
+
+/* 黏土 icon 塊：立體物件（服務 icon 等）。傳入 --c=底色、--cs=同色陰影 */
+.ds-clay-ic{
+  border-radius:var(--r-tile); color:#fff; display:grid; place-items:center;
+  background:radial-gradient(circle at 33% 26%, rgba(255,255,255,.5), rgba(255,255,255,0) 55%), var(--c, var(--brand-coral));
+  box-shadow:0 10px 15px -4px var(--cs, rgba(240,120,100,.5)), inset 3px 4px 6px rgba(255,255,255,.45), inset -4px -5px 9px rgba(0,0,0,.16);
+}
+
+/* 黏土球：心情表情。預設中性灰；.is-on 切換成薄荷（選中）*/
+.ds-sphere{ border-radius:50%; display:grid; place-items:center;
+  background:radial-gradient(circle at 34% 30%, #efe8f0, #d7cfdf 62%, #c7bdd0 100%);
+  box-shadow:0 9px 14px -4px rgba(150,130,160,.4), inset 3px 3px 6px rgba(255,255,255,.65), inset -4px -5px 9px rgba(160,145,175,.4); }
+.ds-sphere.is-on{
+  background:radial-gradient(circle at 34% 30%, #b6e9cd, #7fd1a6 60%, #5cbb8c 100%);
+  box-shadow:0 13px 18px -5px rgba(70,170,120,.5), inset 3px 3px 6px rgba(255,255,255,.6), inset -4px -6px 10px rgba(50,140,95,.45);
+  animation:ds-moodBounce 1.5s ease-in-out infinite; }
+@keyframes ds-moodBounce{ 0%,100%{ transform:translateY(-3px) } 50%{ transform:translateY(-11px) } }
+
+/* 主按鈕（識別色）/ 次按鈕（淺色）；同高同圓角 */
+.ds-btn{ border:1px solid rgba(255,255,255,.4); padding:15px; border-radius:var(--r-btn); cursor:pointer;
+  color:#fff; font-weight:700; letter-spacing:3px; background:var(--brand-gradient);
+  box-shadow:0 10px 20px -7px rgba(240,120,100,.5), 0 2px 5px rgba(240,120,100,.18), inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 7px rgba(190,80,70,.22); transition:transform .12s; }
+.ds-btn:active{ transform:translateY(1px); }
+.ds-btn--ghost{ color:#9a6f88; background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.56));
+  border:1px solid rgba(255,255,255,.72); box-shadow:0 7px 15px -7px rgba(180,120,150,.30), inset 0 1px 0 rgba(255,255,255,.95); }
+
+@media (prefers-reduced-motion:reduce){
+  .ds-sphere.is-on{ animation:none; transform:translateY(-3px); }
+}

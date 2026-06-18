@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>首頁 · 符合設計規範版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* 規範 tokens */
+    --coral:#f5806c; --coral-l:#ffb597; --coral-d:#e8654f;
+    --mint:#5cbb8c; --lav:#a98fe0; --butter:#ffc945; --mochi:#f3a557; --rose:#e58fac;
+    --ink:#4a3340; --ink2:#8a7382; --ink3:#bba9b6; --line:#ece0e8;
+    --r-card:22px; --r-btn:16px; --r-tile:14px;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; }
+  body{ font-family:"Noto Sans SC","PingFang SC",sans-serif; color:var(--ink); background:#e7e2ee; min-height:100vh; padding:30px 18px 50px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .head{ text-align:center; max-width:520px; }
+  .head h1{ font-size:19px; font-weight:900; margin:0 0 6px; color:#3f2c39; }
+  .head p{ margin:0; font-size:12.5px; color:#857d92; line-height:1.7; }
+  .head b{ color:var(--coral-d); }
+
+  .device{ width:344px; border-radius:46px; padding:9px; background:linear-gradient(160deg,#fdf6fb,#efe4f0);
+    box-shadow:0 34px 68px rgba(110,90,120,.28), inset 0 1px 2px rgba(255,255,255,.8); }
+  /* 規範背景：柔霧粉 + 餵玻璃的淡光暈 + 紙質顆粒 */
+  .screen{ position:relative; width:326px; border-radius:38px; overflow:hidden; color:var(--ink);
+    background:
+      radial-gradient(60% 34% at 85% 6%, rgba(255,205,176,.40), transparent 60%),
+      radial-gradient(56% 34% at 9% 70%, rgba(222,198,240,.32), transparent 60%),
+      radial-gradient(96% 44% at 50% 0%, #fff3ef 0%, rgba(255,243,239,0) 62%),
+      linear-gradient(180deg,#f6ebee 0%, #f1e7eb 100%); }
+  .screen::after{ content:""; position:absolute; inset:0; pointer-events:none; opacity:.5; mix-blend-mode:multiply; z-index:40;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E"); }
+  .view{ position:relative; z-index:1; }
+
+  /* 玻璃卡 */
+  .card{ margin:15px 18px 0; padding:17px; position:relative;
+    background:linear-gradient(150deg, rgba(255,255,255,.60), rgba(255,255,255,.34));
+    -webkit-backdrop-filter:saturate(165%) blur(17px); backdrop-filter:saturate(165%) blur(17px);
+    border:1px solid rgba(255,255,255,.62); border-radius:var(--r-card);
+    box-shadow:0 18px 28px -12px rgba(180,120,150,.26), 0 6px 12px -6px rgba(180,120,150,.14), inset 0 1px 0 rgba(255,255,255,.95), inset -4px -6px 11px rgba(214,170,190,.16); }
+
+  .htop{ display:flex; align-items:flex-start; justify-content:space-between; padding:20px 18px 0; position:relative; }
+  .date{ font-size:11.5px; color:var(--ink3); font-weight:500; }
+  .hi{ font-size:21px; font-weight:900; color:var(--ink); margin-top:3px; }
+  .orb{ width:38px; height:38px; border-radius:50%; display:grid; place-items:center; color:#9a7fa0; flex:none;
+    background:radial-gradient(circle at 34% 30%, #fff, #f4e7f0 70%);
+    box-shadow:0 7px 12px -3px rgba(150,110,140,.35), inset 2px 2px 4px rgba(255,255,255,.9), inset -3px -3px 6px rgba(200,170,190,.4); }
+  .orb.ava{ color:#b07c98; background:radial-gradient(circle at 34% 30%, #ffe6ef, #ecc8e6 78%); }
+  .cat{ position:absolute; right:6px; top:46px; width:84px; z-index:-1; }
+
+  .ctitle{ font-size:15px; font-weight:700; }
+  .crt{ font-size:11px; color:var(--ink2); }
+  .eyebrow{ display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:#a85a86; background:rgba(253,234,242,.7); padding:6px 12px; border-radius:999px; }
+  .heart{ display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; color:var(--coral-d); background:rgba(253,234,240,.7); padding:6px 11px; border-radius:999px; }
+  .quote{ font-size:15px; line-height:1.92; color:var(--ink); font-weight:500; margin-top:11px; }
+
+  .week{ display:flex; justify-content:space-between; margin-top:15px; }
+  .wd{ display:flex; flex-direction:column; align-items:center; gap:9px; font-size:11px; color:var(--ink3); font-weight:500; }
+  /* 固定高度的指示器槽：小圓點與天氣圖都置中其中，讓所有星期標籤對齊同一基線 */
+  .wd .ind{ height:34px; display:flex; align-items:center; justify-content:center; }
+  .wd.on{ color:var(--ink); font-weight:700; }
+  /* 小玻璃透光チップ(低飽和、天氣靠圖示);今日加珊瑚圈 */
+  /* 本周心情 白方塊：小尺寸但更 3D 軟萌(球面高光 + 內外柔陰影);今日加珊瑚圈、不跳動 */
+  .gchip{ width:31px; height:31px; border-radius:11px; display:grid; place-items:center;
+    background:radial-gradient(circle at 34% 28%, #ffffff, #f1ebf2 78%);
+    box-shadow:0 7px 12px -4px rgba(150,120,150,.35), inset 2px 3px 4px rgba(255,255,255,.9), inset -3px -4px 7px rgba(190,172,195,.42); }
+  .wd.on .gchip{ border:2px solid var(--coral); box-shadow:0 8px 13px -4px rgba(245,128,108,.42), inset 2px 3px 4px rgba(255,255,255,.9), inset -3px -4px 7px rgba(190,172,195,.4); }
+  .wd .dot{ width:6px; height:6px; border-radius:50%; background:#e6dbe5; }   /* 未來/未記錄日：留空小點 */
+
+  /* 今日 tag = 暖黃黏土 + 深字 */
+  .tag{ font-size:11px; font-weight:700; color:#9a6a1e; padding:5px 12px; border-radius:999px;
+    background:radial-gradient(circle at 35% 30%, #ffe07f, #ffc945); box-shadow:0 5px 9px -2px rgba(230,170,40,.45), inset 1px 2px 3px rgba(255,255,255,.6), inset -2px -2px 4px rgba(200,140,20,.35); }
+
+  /* 心情表情：黏土球，只有選中=薄荷，其餘中性灰 */
+  .moods{ display:flex; justify-content:space-between; margin:18px 2px 18px; }
+  .m{ display:flex; flex-direction:column; align-items:center; gap:9px; }
+  .m .f{ width:46px; height:46px; border-radius:50%; display:grid; place-items:center;
+    background:radial-gradient(circle at 34% 30%, #efe8f0, #d7cfdf 62%, #c7bdd0 100%);
+    box-shadow:0 9px 14px -4px rgba(150,130,160,.4), inset 3px 3px 6px rgba(255,255,255,.65), inset -4px -5px 9px rgba(160,145,175,.4); }
+  .m .f svg{ stroke:#9a8fa8; }
+  .m .l{ font-size:10.5px; color:var(--ink3); font-weight:500; }
+  .m.sel .f{ width:54px; height:54px;
+    background:radial-gradient(circle at 34% 30%, #b6e9cd, #7fd1a6 60%, #5cbb8c 100%);
+    box-shadow:0 13px 18px -5px rgba(70,170,120,.5), inset 3px 3px 6px rgba(255,255,255,.6), inset -4px -6px 10px rgba(50,140,95,.45);
+    animation:moodBounce 1.5s ease-in-out infinite; }
+  @keyframes moodBounce{ 0%,100%{ transform:translateY(-3px) } 50%{ transform:translateY(-11px) } }
+  @media (prefers-reduced-motion:reduce){ .m.sel .f{ animation:none; transform:translateY(-3px); } }
+  .m.sel .f svg{ stroke:#fff; }
+  .m.sel .l{ color:#3f9468; font-weight:700; }
+
+  /* 規範按鈕：識別色珊瑚、精緻款 */
+  .cta{ width:100%; border:1px solid rgba(255,255,255,.4); padding:15px; border-radius:var(--r-btn); cursor:pointer; color:#fff; font-weight:700; font-size:15.5px; letter-spacing:3px;
+    background:linear-gradient(180deg,var(--coral-l),var(--coral));
+    box-shadow:0 10px 20px -7px rgba(240,120,100,.5), 0 2px 5px rgba(240,120,100,.18), inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 7px rgba(190,80,70,.22);
+    display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .12s; }
+  .cta:active{ transform:translateY(1px); }
+
+  .sect{ font-size:14px; font-weight:700; color:var(--ink2); margin:24px 18px 12px; }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 18px 4px; }
+  .tile{ padding:14px 13px; }
+  .tile.off{ opacity:.55; }
+  /* 服務 icon：黏土材質、規範色盤(非霓虹彩虹) */
+  .ti{ width:44px; height:44px; border-radius:15px; display:grid; place-items:center; color:#fff;
+    background:radial-gradient(circle at 33% 26%, rgba(255,255,255,.5), rgba(255,255,255,0) 55%), var(--c);
+    box-shadow:0 10px 15px -4px var(--cs), inset 3px 4px 6px rgba(255,255,255,.4), inset -4px -5px 9px rgba(0,0,0,.16); }
+  .tile h4{ margin:12px 0 3px; font-size:14.5px; font-weight:700; }
+  .tile p{ margin:0; font-size:11px; color:var(--ink2); }
+
+  .nav{ display:flex; justify-content:space-around; align-items:flex-end; padding:13px 12px 16px; margin-top:18px; }
+  .nav .it{ display:flex; flex-direction:column; align-items:center; gap:4px; font-size:10px; font-weight:500; color:var(--ink3); }
+  .nav .it.on{ color:var(--coral-d); }
+  .nav .home{ width:50px; height:50px; border-radius:50%; display:grid; place-items:center; color:#fff; margin-bottom:7px;
+    background:linear-gradient(180deg,var(--coral-l),var(--coral));
+    box-shadow:0 11px 20px -5px rgba(240,120,100,.55), inset 0 1px 0 rgba(255,255,255,.5), inset 0 -3px 7px rgba(190,80,70,.25); }
+</style>
+</head>
+<body>
+
+  <div class="head">
+    <h1>首頁 · 符合設計規範版</h1>
+    <p>識別色＝<b>暖珊瑚 #F5806C</b> · 服務 icon 收進規範色盤(黏土) · 表情只選中上色 · emoji 改 SVG · 柔霧粉底＋玻璃卡＋紙質顆粒</p>
+  </div>
+
+  <div class="device"><div class="screen"><div class="view">
+
+    <div class="htop">
+      <div><div class="date">6/18 周四</div><div class="hi">嗨，Eva測試</div></div>
+      <div style="display:flex; gap:8px;">
+        <div class="orb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg></div>
+        <div class="orb ava"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 14a3.5 3.5 0 0 0 7 0"/></svg></div>
+      </div>
+    </div>
+
+    <!-- 本周心情 -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:baseline;"><span class="ctitle">本周心情</span><span class="crt">已记录 4 天 · 晴 3 阴 1</span></div>
+      <div class="week">
+        <div class="wd"><span class="ind"><span class="gchip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8a93a" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 5v1.6M12 17.4V19M5 12h1.6M17.4 12H19M6.8 6.8l1.1 1.1M16.1 16.1l1.1 1.1M17.2 6.8l-1.1 1.1M7.9 16.1l-1.1 1.1"/></svg></span></span>周一</div>
+        <div class="wd"><span class="ind"><span class="gchip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8a93a" stroke-width="1.6"><circle cx="9" cy="8.5" r="2.6"/><path d="M11 17a3.2 3.2 0 0 1 .4-6.4A4.4 4.4 0 0 1 20 11a2.8 2.8 0 0 1-.4 6H11z" stroke="#a8b0c2"/></svg></span></span>周二</div>
+        <div class="wd"><span class="ind"><span class="gchip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa0b5" stroke-width="1.7"><path d="M7 17a4 4 0 0 1-.5-7.97A5.5 5.5 0 0 1 17 10a3.5 3.5 0 0 1-.5 7z"/></svg></span></span>周三</div>
+        <div class="wd on"><span class="ind"><span class="gchip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e8a93a" stroke-width="1.6"><circle cx="9" cy="8.5" r="2.6"/><path d="M9 3.6v1.2M3.8 8.5h1.2M5.1 4.9l.9.9M12.9 4.9l-.9.9M11 17a3.2 3.2 0 0 1 .4-6.4A4.4 4.4 0 0 1 20 11a2.8 2.8 0 0 1-.4 6H11z" stroke="#9aa0b5"/></svg></span></span>周四</div>
+        <div class="wd"><span class="ind"><span class="dot"></span></span>周五</div>
+        <div class="wd"><span class="ind"><span class="dot"></span></span>周六</div>
+        <div class="wd"><span class="ind"><span class="dot"></span></span>周日</div>
+      </div>
+    </div>
+
+    <!-- 今日金句 -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6z"/></svg> 今日金句</span>
+        <span class="heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.6-7-9.5A3.5 3.5 0 0 1 12 7a3.5 3.5 0 0 1 7 3.5C19 15.4 12 20 12 20z"/></svg> 1</span>
+      </div>
+      <div class="quote">「人生最大的敌人不是别人，而是昨天那个不愿意改变和成长的自己。」</div>
+    </div>
+
+    <!-- 心情打卡 -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span class="ctitle">今天感觉怎么样？</span><span class="tag">今日</span></div>
+      <div class="moods">
+        <div class="m"><div class="f"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8 14a4 4 0 0 0 8 0"/></svg></div><div class="l">很好</div></div>
+        <div class="m sel"><div class="f"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 14a3.5 3.5 0 0 0 7 0"/></svg></div><div class="l">不错</div></div>
+        <div class="m"><div class="f"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 14.5h7"/></svg></div><div class="l">普通</div></div>
+        <div class="m"><div class="f"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8 15a4 4 0 0 1 8 0"/></svg></div><div class="l">低落</div></div>
+        <div class="m"><div class="f"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8 15a4 4 0 0 1 8 0"/><path d="M7.4 17.6l-.5 1.3M10 18.2l-.5 1.3" stroke-width="1.5"/></svg></div><div class="l">想哭</div></div>
+      </div>
+      <button class="cta"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.4 5.6L19 9l-5.6 1.4L12 16l-1.4-5.6L5 9l5.6-1.4z"/></svg> 开始心晴打卡</button>
+    </div>
+
+    <!-- 探索服务 -->
+    <div class="sect">探索服务</div>
+    <div class="grid">
+      <div class="tile card" style="margin:0"><div class="ti" style="--c:var(--lav); --cs:rgba(169,143,224,.5)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 4a2.5 2.5 0 0 0-2.5 2.5A2.5 2.5 0 0 0 5 11a2.5 2.5 0 0 0 1.5 4.5A2.5 2.5 0 0 0 9 20a1.5 1.5 0 0 0 1.5-1.5V5.5A1.5 1.5 0 0 0 9 4z"/><path d="M15 4a2.5 2.5 0 0 1 2.5 2.5A2.5 2.5 0 0 1 19 11a2.5 2.5 0 0 1-1.5 4.5A2.5 2.5 0 0 1 15 20a1.5 1.5 0 0 1-1.5-1.5V5.5A1.5 1.5 0 0 1 15 4z"/></svg></div><h4>专业心理测评</h4><p>大五人格测评</p></div>
+      <div class="tile card" style="margin:0"><div class="ti" style="--c:var(--mint); --cs:rgba(92,187,140,.5)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4.5h6V7H9z" fill="currentColor" stroke="none"/><path d="M9 11l1.6 1.6L14 9.5"/></svg></div><h4>自测心理测评</h4><p>AI智能分析</p></div>
+      <div class="tile card" style="margin:0"><div class="ti" style="--c:var(--coral); --cs:rgba(245,128,108,.5)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 6h14v9H9l-4 4z"/><path d="M12 9.3l.9.9.9-.9a1.2 1.2 0 0 1 0 1.7l-1.8 1.8-1.8-1.8a1.2 1.2 0 0 1 0-1.7 1.2 1.2 0 0 1 1.8 0z" fill="currentColor" stroke="none"/></svg></div><h4>心晴倾诉</h4><p>匿名分享心情</p></div>
+      <div class="tile card" style="margin:0"><div class="ti" style="--c:var(--mochi); --cs:rgba(243,165,87,.5)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 13a7 7 0 0 1 14 0"/><rect x="4" y="13" width="3.5" height="6" rx="1.6"/><rect x="16.5" y="13" width="3.5" height="6" rx="1.6"/></svg></div><h4>主题式咨询</h4><p>AI 教练陪你聊</p></div>
+      <div class="tile card" style="margin:0"><div class="ti" style="--c:var(--rose); --cs:rgba(229,143,172,.5)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="6" width="16" height="14" rx="2.5"/><path d="M4 10h16M8 4v4M16 4v4"/><path d="M12 13.5c1-1.4 3-.4 3 1 0 1.2-3 3-3 3s-3-1.8-3-3c0-1.4 2-2.4 3-1z" fill="currentColor" stroke="none"/></svg></div><h4>心事援助（线下）</h4><p>专业咨询预约</p></div>
+      <div class="tile card off" style="margin:0"><div class="ti" style="--c:#c4bcca; --cs:rgba(150,140,160,.4)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="6" width="16" height="12" rx="2.5"/><path d="M10 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none"/></svg></div><h4>专业咨询（在线）</h4><p>敬请期待</p></div>
+    </div>
+
+    <!-- 底部导览 -->
+    <div class="nav">
+      <div class="it"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>关于</div>
+      <div class="it"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h11l3 3v11H5z"/><path d="M8 9h7M8 13h7"/></svg>内容服务</div>
+      <div class="it on"><div class="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z"/></svg></div></div>
+      <div class="it"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9l11-4v14L4 15zM15 7l4 2v6l-4 2"/></svg>公告栏</div>
+      <div class="it"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>我的</div>
+    </div>
+
+  </div></div></div>
+
+<script>
+  if(location.search.indexOf('cap=1')>=0){ var h=document.querySelector('.head'); if(h) h.style.display='none'; document.body.style.padding='14px'; }
+</script>
+</body>
+</html>

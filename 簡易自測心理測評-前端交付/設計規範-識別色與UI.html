@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>簡易自測心理測評 · UI 設計規範 v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#f5806c; --coral-l:#ffb597; --coral-d:#e8654f;
+    --rose-mist:#f6ebee; --paper:#ffffff;
+    --mint:#5cbb8c; --lav:#a98fe0; --butter:#ffc945; --mochi:#f3a557;
+    --low:#7fc6a0; --mid:#f3bd6a; --high:#f08a72;
+    --ink:#4a3340; --ink2:#8a7382; --ink3:#bba9b6; --line:#ece0e8;
+    --r-card:22px; --r-btn:16px; --r-tile:15px;
+    --glass:linear-gradient(150deg, rgba(255,255,255,.72), rgba(255,255,255,.5));
+    --sh-warm:0 14px 30px -12px rgba(180,120,150,.28), 0 4px 10px -6px rgba(180,120,150,.14);
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body{ margin:0; font-family:"Noto Sans SC","PingFang TC",sans-serif; color:var(--ink);
+    background:
+      radial-gradient(60% 30% at 88% 0%, rgba(255,205,176,.30), transparent 60%),
+      radial-gradient(50% 30% at 5% 40%, rgba(222,198,240,.24), transparent 60%),
+      linear-gradient(180deg,#f8eef0,#f3ecf2 60%,#fdf2ec);
+    line-height:1.6; padding:0 0 60px; }
+  .wrap{ max-width:1060px; margin:0 auto; padding:0 26px; }
+  header{ text-align:center; padding:48px 26px 18px; }
+  header .ey{ font-size:12px; letter-spacing:4px; color:var(--coral-d); font-weight:700; text-transform:uppercase; }
+  header h1{ font-size:30px; font-weight:900; margin:10px 0 6px; color:#3f2c39; }
+  header p{ font-size:13.5px; color:var(--ink2); margin:0; }
+
+  section{ margin-top:38px; }
+  .sec-h{ display:flex; align-items:baseline; gap:12px; margin-bottom:16px; }
+  .sec-h .no{ width:30px; height:30px; flex:none; border-radius:50%; display:grid; place-items:center; color:#fff; font-weight:800; font-size:14px;
+    background:linear-gradient(180deg,var(--coral-l),var(--coral)); box-shadow:0 6px 12px -5px rgba(240,120,100,.5); }
+  .sec-h h2{ font-size:19px; font-weight:900; margin:0; color:#3f2c39; }
+  .sec-h .sub{ font-size:12.5px; color:var(--ink2); }
+
+  .card{ background:var(--glass); -webkit-backdrop-filter:saturate(160%) blur(16px); backdrop-filter:saturate(160%) blur(16px);
+    border:1px solid rgba(255,255,255,.65); border-radius:var(--r-card); box-shadow:var(--sh-warm); padding:22px; }
+
+  /* 識別色 hero */
+  .hero{ display:flex; gap:22px; align-items:stretch; flex-wrap:wrap; }
+  .hero .big{ flex:1; min-width:260px; border-radius:20px; padding:26px; color:#fff; position:relative; overflow:hidden;
+    background:linear-gradient(150deg,var(--coral-l),var(--coral) 70%,var(--coral-d));
+    box-shadow:0 18px 34px -12px rgba(240,120,100,.55), inset 0 1px 0 rgba(255,255,255,.5); }
+  .hero .big .nm{ font-size:22px; font-weight:900; }
+  .hero .big .en{ font-size:12px; letter-spacing:2px; opacity:.9; }
+  .hero .big .hex{ font-size:15px; font-weight:700; margin-top:18px; letter-spacing:1px; }
+  .hero .big .use{ font-size:12px; opacity:.92; margin-top:6px; line-height:1.6; }
+  .hero .vars{ flex:1; min-width:240px; display:flex; flex-direction:column; gap:10px; justify-content:center; }
+  .vrow{ display:flex; align-items:center; gap:12px; }
+  .vrow .sw{ width:46px; height:46px; border-radius:13px; flex:none; box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 5px 11px -5px rgba(0,0,0,.2); }
+  .vrow .t b{ font-size:13.5px; } .vrow .t span{ font-size:11.5px; color:var(--ink2); }
+  .vrow .hx{ margin-left:auto; font-size:12px; font-weight:700; color:var(--ink2); }
+
+  /* 色票 grid */
+  .swatches{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+  .sw-card{ border-radius:16px; overflow:hidden; background:var(--paper); border:1px solid var(--line); box-shadow:0 6px 14px -8px rgba(150,110,140,.3); }
+  .sw-card .c{ height:64px; }
+  .sw-card .meta{ padding:9px 11px; }
+  .sw-card .meta b{ font-size:13px; } .sw-card .meta .hx{ font-size:11px; color:var(--ink2); font-weight:600; }
+  .sw-card .meta .u{ font-size:10.5px; color:var(--ink3); margin-top:2px; }
+
+  /* 字級 */
+  .type div{ margin:0; }
+  .t-d{ font-size:28px; font-weight:900; }
+  .t-h1{ font-size:21px; font-weight:900; }
+  .t-h2{ font-size:17px; font-weight:700; }
+  .t-body{ font-size:14.5px; font-weight:400; }
+  .t-cap{ font-size:12px; color:var(--ink2); }
+  .t-lab{ font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); }
+  .type small{ color:var(--ink3); font-size:11px; font-weight:600; margin-left:10px; }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+
+  /* 元件示範 */
+  .btn{ width:100%; border:1px solid rgba(255,255,255,.4); padding:14px; border-radius:var(--r-btn); cursor:pointer; color:#fff; font-weight:700; font-size:15px; letter-spacing:3px; font-family:inherit;
+    background:linear-gradient(180deg,var(--coral-l),var(--coral));
+    box-shadow:0 10px 20px -7px rgba(240,120,100,.5), 0 2px 5px rgba(240,120,100,.18), inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 7px rgba(190,80,70,.22); }
+  .btn.ghost{ color:#9a6f88; border:1px solid rgba(180,140,160,.4); background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.6));
+    box-shadow:0 7px 15px -7px rgba(180,120,150,.3), inset 0 1px 0 rgba(255,255,255,.95); }
+  .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+  .chip{ font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:999px; }
+  .clay-ic{ width:48px; height:48px; border-radius:15px; display:grid; place-items:center; color:#fff;
+    background:radial-gradient(circle at 33% 26%, rgba(255,255,255,.55), rgba(255,255,255,0) 55%), var(--c, var(--coral));
+    box-shadow:0 9px 15px -5px rgba(150,100,120,.4), inset 3px 4px 6px rgba(255,255,255,.45), inset -4px -5px 9px rgba(0,0,0,.16); }
+  .sphere{ width:50px; height:50px; border-radius:50%; display:grid; place-items:center;
+    background:radial-gradient(circle at 34% 30%, #b6e9cd, #7fd1a6 60%, #5cbb8c 100%);
+    box-shadow:0 10px 15px -5px rgba(70,170,120,.45), inset 3px 3px 6px rgba(255,255,255,.55), inset -4px -5px 9px rgba(50,140,95,.4); }
+  .ibar{ height:9px; border-radius:999px; background:#efe2ec; box-shadow:inset 2px 2px 4px rgba(190,160,180,.5); overflow:hidden; }
+  .ibar i{ display:block; height:100%; border-radius:999px; }
+
+  .rules{ display:grid; grid-template-columns:1fr 1fr; gap:8px 22px; font-size:13px; }
+  @media(max-width:720px){ .rules{ grid-template-columns:1fr; } }
+  .rules .ok::before{ content:"✓ "; color:var(--mint); font-weight:900; }
+  .rules .no::before{ content:"✕ "; color:var(--high); font-weight:900; }
+
+  pre{ background:#33283050; color:#3f2c39; border:1px solid var(--line); border-radius:14px; padding:16px 18px; overflow-x:auto;
+    font-family:ui-monospace,Menlo,monospace; font-size:11.5px; line-height:1.7; background:rgba(255,255,255,.6); }
+  .meta-line{ font-size:12px; color:var(--ink3); text-align:center; margin-top:40px; }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="ey">Design Guidelines v1</div>
+    <h1>簡易自測心理測評 · UI 設計規範</h1>
+    <p>識別色、配色系統、字體、間距、材質與元件規範 · 暖色療癒 · 黏土 × 液態玻璃</p>
+  </header>
+
+  <div class="wrap">
+
+    <!-- 1 識別色 -->
+    <section>
+      <div class="sec-h"><div class="no">1</div><h2>識別色 Identity</h2><div class="sub">品牌主色 · 用於主要行動與重點</div></div>
+      <div class="card">
+        <div class="hero">
+          <div class="big">
+            <div class="nm">暖珊瑚</div><div class="en">WARM CORAL · 識別色</div>
+            <div class="hex">#F5806C</div>
+            <div class="use">主按鈕、首頁主鈕、麥克風、重點數據與品牌溫度。整個 app 最該被記住的顏色。</div>
+          </div>
+          <div class="vars">
+            <div class="vrow"><div class="sw" style="background:#ffb597"></div><div class="t"><b>珊瑚亮</b><br><span>漸層上色 · hover</span></div><div class="hx">#FFB597</div></div>
+            <div class="vrow"><div class="sw" style="background:#f5806c"></div><div class="t"><b>珊瑚（主）</b><br><span>主要行動 · 識別</span></div><div class="hx">#F5806C</div></div>
+            <div class="vrow"><div class="sw" style="background:#e8654f"></div><div class="t"><b>珊瑚深</b><br><span>按壓 · 淺底上的品牌字</span></div><div class="hx">#E8654F</div></div>
+            <div class="vrow"><div class="sw" style="background:#f6ebee; border:1px solid var(--line)"></div><div class="t"><b>柔霧粉</b><br><span>品牌中性底（非識別色）</span></div><div class="hx">#F6EBEE</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 配色系統 -->
+    <section>
+      <div class="sec-h"><div class="no">2</div><h2>配色系統 Palette</h2><div class="sub">輔助色 · 語意色 · 中性</div></div>
+
+      <div class="t-lab" style="margin:4px 0 10px">輔助色 Secondary（分類 / 狀態，低飽和保持和諧）</div>
+      <div class="swatches">
+        <div class="sw-card"><div class="c" style="background:#5cbb8c"></div><div class="meta"><b>薄荷綠</b> <span class="hx">#5CBB8C</span><div class="u">正向 / 平穩 / 完成 / 勾選</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#a98fe0"></div><div class="meta"><b>薰衣草</b> <span class="hx">#A98FE0</span><div class="u">AI / 分析 / 語音助手</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#ffc945"></div><div class="meta"><b>暖黃</b> <span class="hx">#FFC945</span><div class="u">「今日」/ 提醒標籤</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#f3a557"></div><div class="meta"><b>Mochi 橘</b> <span class="hx">#F3A557</span><div class="u">寵物吉祥物專用（不作 UI 框架色）</div></div></div>
+      </div>
+
+      <div class="t-lab" style="margin:20px 0 10px">語意色 Semantic（報告五項風險色階 · 與品牌暖色同調，不刺眼）</div>
+      <div class="swatches">
+        <div class="sw-card"><div class="c" style="background:#7fc6a0"></div><div class="meta"><b>平穩 Low</b> <span class="hx">#7FC6A0</span><div class="u">數值低 · 狀態良好</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#f3bd6a"></div><div class="meta"><b>需留意 Mid</b> <span class="hx">#F3BD6A</span><div class="u">中等 · 可關注</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#f08a72"></div><div class="meta"><b>偏高 High</b> <span class="hx">#F08A72</span><div class="u">偏高 · ≥8 帶專業支持</div></div></div>
+      </div>
+
+      <div class="t-lab" style="margin:20px 0 10px">文字 / 中性 Neutral（文字不用純黑，用深莓灰當錨點）</div>
+      <div class="swatches">
+        <div class="sw-card"><div class="c" style="background:#4a3340"></div><div class="meta"><b>主文字</b> <span class="hx">#4A3340</span><div class="u">標題 / 內文錨點</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#8a7382"></div><div class="meta"><b>次文字</b> <span class="hx">#8A7382</span><div class="u">說明 / 副標</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#bba9b6"></div><div class="meta"><b>弱文字</b> <span class="hx">#BBA9B6</span><div class="u">標籤 / 提示</div></div></div>
+        <div class="sw-card"><div class="c" style="background:#ece0e8"></div><div class="meta"><b>分隔線</b> <span class="hx">#ECE0E8</span><div class="u">髮絲線 / 邊框</div></div></div>
+      </div>
+    </section>
+
+    <!-- 3 字體 -->
+    <section>
+      <div class="sec-h"><div class="no">3</div><h2>字體 Typography</h2><div class="sub">乾淨無襯線 · 行高放鬆 · 支援放大字級</div></div>
+      <div class="card type">
+        <div class="t-lab">LABEL 標籤 · letter-spacing 2px</div>
+        <div class="t-d" style="margin-top:10px">28 / 900 大標題 <small>Display</small></div>
+        <div class="t-h1" style="margin-top:8px">21 / 900 標題 <small>H1</small></div>
+        <div class="t-h2" style="margin-top:8px">17 / 700 區段標題 <small>H2</small></div>
+        <div class="t-body" style="margin-top:8px">14.5 / 400 內文，行高 1.7，溫暖好讀。<small>Body</small></div>
+        <div class="t-cap" style="margin-top:8px">12 / 400 說明文字 <small>Caption</small></div>
+        <hr style="border:none; border-top:1px solid var(--line); margin:16px 0">
+        <div style="font-size:12.5px; color:var(--ink2); line-height:1.9">
+          字族：中文 <b>PingFang SC / Noto Sans SC</b>，英數同字族（正式版可導入一套中文品牌字，質感更統一）。<br>
+          原則：標題靠粗體與字距撐場、不靠花俏字體；引言/療癒文行高放到 <b>1.85</b>。<br>
+          <b>無障礙</b>：報告頁提供「放大字級」與「語音播報」（對象含長者/學生）。
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 間距圓角陰影 -->
+    <section>
+      <div class="sec-h"><div class="no">4</div><h2>間距 · 圓角 · 陰影</h2><div class="sub">8pt 節奏 · 一致圓角 · 暖色調陰影</div></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="t-h2" style="margin-bottom:10px">間距 Spacing（8pt 網格）</div>
+          <div style="font-size:13px; color:var(--ink2); line-height:2">頁面左右邊距 <b>16–18</b>　·　卡片內距 <b>16–18</b><br>區塊間距 <b>24</b>　·　元件間距 <b>8 / 12</b></div>
+          <div class="t-h2" style="margin:18px 0 10px">圓角 Radius</div>
+          <div style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap">
+            <div style="text-align:center"><div style="width:54px;height:40px;background:#fff;border:1px solid var(--line);border-radius:22px"></div><div style="font-size:10.5px;color:var(--ink2);margin-top:5px">卡片 22</div></div>
+            <div style="text-align:center"><div style="width:54px;height:40px;background:#fff;border:1px solid var(--line);border-radius:16px"></div><div style="font-size:10.5px;color:var(--ink2);margin-top:5px">按鈕 16</div></div>
+            <div style="text-align:center"><div style="width:44px;height:40px;background:#fff;border:1px solid var(--line);border-radius:14px"></div><div style="font-size:10.5px;color:var(--ink2);margin-top:5px">磚/icon 14</div></div>
+            <div style="text-align:center"><div style="width:54px;height:26px;background:#fff;border:1px solid var(--line);border-radius:999px"></div><div style="font-size:10.5px;color:var(--ink2);margin-top:5px">膠囊 999</div></div>
+            <div style="text-align:center"><div style="width:40px;height:40px;background:#fff;border:1px solid var(--line);border-radius:50%"></div><div style="font-size:10.5px;color:var(--ink2);margin-top:5px">球 50%</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="t-h2" style="margin-bottom:12px">陰影 Elevation（暖粉色調、向下、分層）</div>
+          <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center">
+            <div style="width:80px;height:56px;background:#fff;border-radius:14px;box-shadow:0 6px 14px -8px rgba(180,120,150,.4)"></div>
+            <div style="width:80px;height:56px;background:#fff;border-radius:14px;box-shadow:0 14px 30px -12px rgba(180,120,150,.4),0 4px 10px -6px rgba(180,120,150,.2)"></div>
+            <div style="width:80px;height:56px;border-radius:14px;background:linear-gradient(180deg,#ffb597,#f5806c);box-shadow:0 12px 22px -8px rgba(240,120,100,.5)"></div>
+          </div>
+          <div style="font-size:12px;color:var(--ink2);margin-top:14px;line-height:1.7">陰影一律用<b>暖粉/珊瑚色調</b>(非灰)、方向朝下、可分兩層(環境光+主投影)。避免四周均勻的「發胖」陰影。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 材質 -->
+    <section>
+      <div class="sec-h"><div class="no">5</div><h2>材質語言 Material</h2><div class="sub">黏土 × 液態玻璃 — 品牌的核心質感</div></div>
+      <div class="grid2">
+        <div class="card" style="background:rgba(255,255,255,.45)">
+          <div class="chip" style="display:inline-block;background:#f6eefb;color:#8a7fb0;margin-bottom:10px">玻璃 Glass · 卡片表面</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.8">半透明白 + 背景模糊(backdrop-filter) + 頂部亮高光邊 + 暖色柔投影。讓背景光暈從後面透出折射。<b>用於：所有卡片/面板。</b></div>
+        </div>
+        <div class="card">
+          <div class="chip" style="display:inline-block;background:#fdeaf2;color:#a85a86;margin-bottom:10px">黏土 Clay · 立體物件</div>
+          <div style="font-size:13px;color:var(--ink2);line-height:1.8">球面 radial 高光 + 內外柔陰影,做出膨膨可捏的立體感。<b>用於：icon、表情球、按鈕、吉祥物、心理電量。</b></div>
+          <div style="display:flex;gap:12px;margin-top:14px;align-items:center">
+            <div class="clay-ic" style="--c:#5cbb8c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 11l1.6 1.6L14 9.5"/></svg></div>
+            <div class="sphere"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="10" r="1" fill="#fff" stroke="none"/><path d="M8.5 14a3.5 3.5 0 0 0 7 0"/></svg></div>
+            <div class="clay-ic" style="--c:#a98fe0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="8" width="14" height="10" rx="3"/><circle cx="9.5" cy="13" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--ink3);text-align:center;margin-top:12px">背景配方：柔霧粉底 + 淡暖/冷光暈(餵玻璃折射) + 極淡紙質顆粒(降 AI 感)。</div>
+    </section>
+
+    <!-- 6 元件 -->
+    <section>
+      <div class="sec-h"><div class="no">6</div><h2>元件 Components</h2><div class="sub">統一尺寸 · 主鍵實心 / 次鍵淺色</div></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="t-h2" style="margin-bottom:12px">按鈕（同高同圓角）</div>
+          <button class="btn">主要行動</button>
+          <div style="height:10px"></div>
+          <button class="btn ghost">次要行動</button>
+          <div style="font-size:11.5px;color:var(--ink3);margin-top:10px">內距 15 · 圓角 16 · 字距 3 · 頂部高光邊 · 按壓下沉 1px</div>
+        </div>
+        <div class="card">
+          <div class="t-h2" style="margin-bottom:12px">標籤 / 指標</div>
+          <div class="chips" style="margin-bottom:14px">
+            <span class="chip" style="background:#fff;color:#b88a2e;box-shadow:0 4px 8px -3px rgba(230,170,40,.4)">今日</span>
+            <span class="chip" style="background:#dcf1e7;color:#3f8f66">平穩</span>
+            <span class="chip" style="background:#fbeed3;color:#a9772a">需留意</span>
+            <span class="chip" style="background:#fde2da;color:#c2553c">偏高</span>
+          </div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:6px">心情低落度 <span style="float:right;color:var(--high);font-weight:800">8.5</span></div>
+          <div class="ibar"><i style="width:85%;background:radial-gradient(circle at 30% 30%,#ffb4a0,#f08a72)"></i></div>
+          <div style="font-size:12px;font-weight:600;margin:12px 0 6px">情緒活躍度 <span style="float:right;color:var(--low);font-weight:800">1.7</span></div>
+          <div class="ibar"><i style="width:17%;background:radial-gradient(circle at 30% 30%,#a8e0c2,#7fc6a0)"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 圖示語氣 -->
+    <section>
+      <div class="sec-h"><div class="no">7</div><h2>圖示 · 語氣 · 插畫</h2><div class="sub">原則與禁止事項</div></div>
+      <div class="card">
+        <div class="rules">
+          <div class="ok">圖示用單線(stroke ~1.8)、圓角端點；置於黏土色塊上為白色</div>
+          <div class="no">不使用 emoji 當 UI 元素(👋👧✨🔊)→ 改手作 SVG</div>
+          <div class="ok">語氣溫暖、第二人稱「你」、非診斷、不恐嚇</div>
+          <div class="no">避免「你有病 / 嚴重異常」等診斷或恐嚇字眼</div>
+          <div class="ok">吉祥物 Mochi(黏土橘貓)代表陪伴；測評結果可回灌寵物狀態</div>
+          <div class="no">同畫面避免多種高飽和色互搶(彩虹 icon)</div>
+          <div class="ok">報告對象含長者/學生：用質性標籤(平穩/需留意)＋圖例，少給冷小數</div>
+          <div class="no">主操作不要卡在畫面中間 → 沉到底部拇指區</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 tokens -->
+    <section>
+      <div class="sec-h"><div class="no">8</div><h2>CSS Tokens</h2><div class="sub">給前端 · 直接複製</div></div>
+      <pre>:root{
+  /* 識別色 */
+  --brand-coral:#F5806C; --brand-coral-light:#FFB597; --brand-coral-deep:#E8654F;
+  --brand-gradient:linear-gradient(180deg,#FFB597,#F5806C);
+  /* 中性底 / 表面 */
+  --surface-mist:#F6EBEE; --surface-paper:#FFFFFF;
+  --surface-glass:linear-gradient(150deg,rgba(255,255,255,.72),rgba(255,255,255,.5));
+  /* 輔助 */
+  --mint:#5CBB8C; --lavender:#A98FE0; --butter:#FFC945; --mochi:#F3A557;
+  /* 語意（風險）*/
+  --risk-low:#7FC6A0; --risk-mid:#F3BD6A; --risk-high:#F08A72;
+  /* 文字 / 線 */
+  --ink:#4A3340; --ink-2:#8A7382; --ink-3:#BBA9B6; --line:#ECE0E8;
+  /* 圓角 */
+  --r-card:22px; --r-btn:16px; --r-tile:14px; --r-pill:999px;
+  /* 陰影（暖粉色調）*/
+  --shadow-warm:0 14px 30px -12px rgba(180,120,150,.28),0 4px 10px -6px rgba(180,120,150,.14);
+  --shadow-brand:0 12px 22px -8px rgba(240,120,100,.5);
+}</pre>
+    </section>
+
+    <div class="meta-line">簡易自測心理測評 · UI 設計規範 v1 · 暖色療癒 · 黏土 × 液態玻璃 · 識別色 #F5806C</div>
+  </div>
+
+</body>
+</html>
